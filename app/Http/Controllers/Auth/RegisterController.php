@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -66,6 +68,14 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'is_active' =>  0,
         ]);
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        auth()->logout();
+
+        return redirect()->route('welcome');
     }
 }
